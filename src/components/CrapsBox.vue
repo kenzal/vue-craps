@@ -1,11 +1,22 @@
-<script setup>
-import BetBox from "@/components/BetBox.vue";
+<script lang="ts" setup>
+import BetBoxNew from "@/components/BetBoxNew.vue";
 
-import { onBeforeMount, ref } from "vue";
+import {PropType, ref} from "vue";
+import type {
+  BetSignature,
+  BetSignatureBuy,
+  BetSignatureCome,
+  BetSignatureDontCome,
+  BetSignatureLay,
+  BetSignaturePlace,
+} from "@/compostables/Bets";
+import {BetMethods, findBet, fnMaxOddsDarkSide, fnMaxOddsLightSide,} from "@/compostables/Bets";
+import {BetType} from "@/enums/BetType";
+import type {PlacementBoxNumbers} from "@/compostables/Config";
 
 const props = defineProps({
   boxNumber: {
-    type: Number,
+    type: Number as PropType<PlacementBoxNumbers>,
     required: true,
   },
   maxOdds: {
@@ -25,140 +36,82 @@ const props = defineProps({
     default: false,
   },
   initialBets: {
-    type: Array,
+    type: Array as PropType<BetSignature[]>,
     default() {
       return [];
     },
   },
 });
-const getBets = function () {
-  let bets = [];
-  if (place.value)
-    bets.push({
-      type: "Place",
-      wager: place.value,
-      placement: props.boxNumber,
-    });
-  if (buy.value)
-    bets.push({ type: "Buy", wager: buy.value, placement: props.boxNumber });
-  if (come.value)
-    bets.push({
-      type: "Come",
-      wager: come.value,
-      odds: comeOdds.value,
-      placement: props.boxNumber,
-    });
-  if (lay.value)
-    bets.push({ type: "Lay", wager: lay.value, placement: props.boxNumber });
-  if (dont.value)
-    bets.push({
-      type: "DontCome",
-      wager: dont.value,
-      odds: dontOdds.value,
-      placement: props.boxNumber,
-    });
+const getBets = function (): BetSignature[] {
+  let bets = [] as BetSignature[];
+  if (buyBet.value.wager) bets.push(buyBet.value);
+  if (placeBet.value.wager) bets.push(placeBet.value);
+  if (comeBet.value.wager) bets.push(comeBet.value);
+  if (layBet.value.wager) bets.push(layBet.value);
+  if (dontComeBet.value.wager) bets.push(dontComeBet.value);
   return bets;
 };
 
-const dont = ref(0);
-const dontOdds = ref(0);
-const lay = ref(0);
-const come = ref(0);
-const comeOdds = ref(0);
-const place = ref(0);
-const buy = ref(0);
-const trueOdds = {
-  4: 2,
-  5: 3 / 2,
-  6: 6 / 5,
-  8: 6 / 5,
-  9: 3 / 2,
-  10: 2,
+const emptyDontCome = {
+  type: BetType.DONT_COME,
+  ...BetMethods[BetType.DONT_COME],
+  maxOdds: fnMaxOddsDarkSide,
+  wager: 0,
+  odds: 0,
+  placement: props.boxNumber,
 };
+const emptyLay = {
+  type: BetType.LAY,
+  ...BetMethods[BetType.LAY],
+  wager: 0,
+  placement: props.boxNumber,
+};
+const emptyCome = {
+  type: BetType.COME,
+  ...BetMethods[BetType.COME],
+  maxOdds: fnMaxOddsLightSide,
+  wager: 0,
+  odds: 0,
+  placement: props.boxNumber,
+};
+const emptyPlace = {
+  type: BetType.PLACE,
+  ...BetMethods[BetType.PLACE],
+  wager: 0,
+  placement: props.boxNumber,
+  override_puck: null,
+};
+const emptyBuy = {
+  type: BetType.BUY,
+  ...BetMethods[BetType.BUY],
+  wager: 0,
+  placement: props.boxNumber,
+  override_puck: null,
+};
+const existingDontCome = findBet(props.initialBets, BetType.DONT_COME, props.boxNumber) ?? {};
+const existingLay = findBet(props.initialBets, BetType.LAY, props.boxNumber) ?? {};
+const existingCome = findBet(props.initialBets, BetType.COME, props.boxNumber) ?? {};
+const existingPlace = findBet(props.initialBets, BetType.PLACE, props.boxNumber) ?? {};
+const existingBuy = findBet(props.initialBets, BetType.BUY, props.boxNumber) ?? {};
 
-onBeforeMount(() => {
-  const initDont = props.initialBets
-    .filter((bet) => bet.type === "DontCome")
-    .pop();
-  const initLay = props.initialBets.filter((bet) => bet.type === "Lay").pop();
-  const initCome = props.initialBets.filter((bet) => bet.type === "Come").pop();
-  const initPlace = props.initialBets
-    .filter((bet) => bet.type === "Place")
-    .pop();
-  const initBuy = props.initialBets.filter((bet) => bet.type === "Buy").pop();
-  if (initDont) {
-    dont.value = initDont.wager;
-    dontOdds.value = initDont.odds ?? 0;
-  }
-  if (initCome) {
-    come.value = initCome.wager;
-    comeOdds.value = initCome.odds ?? 0;
-  }
-  if (initLay) lay.value = initLay.wager;
-  if (initPlace) place.value = initPlace.wager;
-  if (initBuy) buy.value = initBuy.wager;
-});
+const dontComeBet = ref<BetSignatureDontCome>(Object.assign(emptyDontCome, existingDontCome) as BetSignatureDontCome);
+const layBet = ref<BetSignatureLay>(  Object.assign(emptyLay, existingLay) as BetSignatureLay);
+const comeBet = ref<BetSignatureCome>(  Object.assign(emptyCome, existingCome) as BetSignatureCome);
+const placeBet = ref<BetSignaturePlace>(Object.assign(emptyPlace, existingPlace) as BetSignaturePlace);
+const buyBet = ref<BetSignatureBuy>(Object.assign(emptyBuy, existingBuy) as BetSignatureBuy);
 
 defineExpose({ getBets });
 </script>
 <template>
   <div class="CrapsBox">
-    <bet-box v-model="dont" :increment="increment" class="half-box" no-increase>
-      Dont
-    </bet-box>
-    <bet-box
-      v-model="dontOdds"
-      :increment="increment"
-      :max="Math.floor(maxOdds * dont * trueOdds[boxNumber])"
-      class="half-box"
-    >
-      Odds
-    </bet-box>
-    <bet-box
-      v-model="lay"
-      :increment="increment"
-      :min="minBet"
-      class="full-box"
-    >
-      Lay
-    </bet-box>
+    <bet-box-new v-model="dontComeBet" :increment="increment" class="full-box" />
+    <bet-box-new v-model="layBet" :increment="increment" class="full-box" />
     <div class="name-box full-box">
       {{ boxNumber === 6 ? "Six" : boxNumber === 9 ? "Nine" : boxNumber }}
     </div>
-    <bet-box
-      v-model="come"
-      :increment="increment"
-      :min="minBet"
-      class="half-box"
-      no-decrease
-    >
-      Come
-    </bet-box>
-    <bet-box
-      v-model="comeOdds"
-      :increment="increment"
-      :max="come.valueOf() * maxOdds"
-      class="half-box"
-    >
-      Odds
-    </bet-box>
-    <bet-box
-      v-model="place"
-      :increment="increment"
-      :min="minBet"
-      class="half-box"
-    >
-      Place
-    </bet-box>
-    <bet-box
-      v-if="buyAllowed"
-      v-model="buy"
-      :increment="increment"
-      :min="Math.max(minBet, 20)"
-      class="half-box"
-    >
-      Buy
-    </bet-box>
+    <bet-box-new v-model="comeBet" :increment="increment" class="full-box"/>
+    <bet-box-new v-model="placeBet" :increment="increment" class="half-box"/>
+    <bet-box-new v-if="buyAllowed" v-model="buyBet" :increment="increment" class="half-box"/>
   </div>
 </template>
 

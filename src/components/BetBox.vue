@@ -16,7 +16,7 @@
 
 <script setup>
 import { watch } from "vue";
-import { useBestChip } from "@/compostables/chips";
+import { useBestChip } from "@/compostables/Chips";
 
 const emit = defineEmits(["update:modelValue"]);
 

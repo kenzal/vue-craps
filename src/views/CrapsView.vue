@@ -2,9 +2,11 @@
 <script setup>
 import CrapsBox from "@/components/CrapsBox.vue";
 import BetBox from "@/components/BetBox.vue";
-import { useChipDenominations } from "@/compostables/chips";
+import { useChipDenominations } from "@/compostables/Chips";
 
 import { ref } from "vue";
+import {flatOdds, maxOdds345} from "@/compostables/MaxOdds";
+import {CrapsTypes} from "@/enums/CrapsTypes";
 
 const boxes = ref([]);
 
@@ -19,11 +21,11 @@ const betSizes = useChipDenominations();
 const increment = ref(1);
 const minBet = 5;
 const config = {
-  maxOdds: { 4: 3, 5: 4, 6: 5, 8: 5, 9: 4, 10: 3 },
+  maxOdds: flatOdds(2)
 };
 
 const previousResponse = JSON.parse(
-  '{"new_table":{"config":{},"puck_location":4,"existing_bets":[{"type":"PassLine","wager":5,"placement":4},{"type":"Come","wager":5,"placement":6,"odds":10},{"type":"Place","wager":5,"placement":4},{"type":"Place","wager":5,"placement":5},{"type":"Place","wager":6,"placement":6,"override_puck":"OFF"},{"type":"Place","wager":6,"placement":8},{"type":"Place","wager":5,"placement":9},{"type":"Place","wager":5,"placement":10},{"type":"Hop","wager":1,"placement":[1,3]},{"type":"AnySeven","wager":1}]}}'
+  '{"new_table":{"config":{},"puck_location":4,"existing_bets":[{"type":"PassLine","wager":5,"placement":4},{"type":"DontCome","wager":5,"placement":6,"odds":10},{"type":"Place","wager":5,"placement":4},{"type":"Place","wager":5,"placement":5},{"type":"Place","wager":6,"placement":6,"override_puck":"OFF"},{"type":"Place","wager":6,"placement":8},{"type":"Place","wager":5,"placement":9},{"type":"Place","wager":5,"placement":10},{"type":"Hop","wager":1,"placement":[1,3]},{"type":"AnySeven","wager":1}]}}'
 );
 
 const setBetSize = function (betSize) {
@@ -172,12 +174,18 @@ const collectCurrentBets = function () {
   width: 100%;
   display: block;
 }
+.bet-box {
+  display: table;
+}
 .wager {
   color: blue;
   font-weight: bold;
   text-align: center;
   background-repeat: no-repeat;
   background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .chip-1 {
