@@ -11,7 +11,7 @@
       >{{ bet?.wager ? bet?.wager : "" }}</span
     >
     <span
-      v-if="bet.getOptions().hasOdds"
+      v-if="'odds' in bet"
       @click.prevent="increaseOdds"
       @contextmenu.prevent="decreaseOdds"
       class="wager odds"
@@ -52,7 +52,7 @@ const bet = computed({
 
 const increaseWager = (): void => {
   if(!bet.value.canIncrease()) return;
-  const minWager = CurrentTableConfig.value.table.bet_min;
+  const minWager = CurrentTableConfig.table.bet_min;
   bet.value.wager = Math.max(minWager, bet.value.wager + props.increment);
 };
 const increaseOdds = (): void => {
@@ -60,7 +60,7 @@ const increaseOdds = (): void => {
 };
 const decreaseWager = (): void => {
   bet.value.wager = Math.max(0, bet.value.wager - props.increment);
-  const minWager = CurrentTableConfig.value.table.bet_min;
+  const minWager = CurrentTableConfig.table.bet_min;
   if (minWager && bet.value.wager < minWager) bet.value.wager = 0;
   if ("odds" in bet.value) bet.value.odds = Math.min(bet.value.maxOdds(), bet.value.odds);
 };

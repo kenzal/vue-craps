@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import BetBoxNew from "@/components/BetBoxNew.vue";
 
-import { PropType, ref } from "vue";
+import { ref } from "vue";
+import type { PropType } from "vue";
 import type {
   BetSignature,
   BetSignatureBuy,
