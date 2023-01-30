@@ -1,7 +1,7 @@
 import { CrapsTypes } from "@/enums/CrapsTypes";
 import type { MaxOddsCrapless, MaxOddsStandard } from "@/compostables/MaxOdds";
 import type { BetSignature } from "@/compostables/Bets";
-import { ref } from "vue";
+import {reactive, ref} from "vue";
 import { maxOdds345 } from "@/compostables/MaxOdds";
 
 interface TableConfigStandard {
@@ -38,8 +38,8 @@ export interface CrapsConfigCrapless {
 }
 export type CrapsConfig = CrapsConfigStandard | CrapsConfigCrapless;
 
-export const CurrentTableConfig = ref<CrapsConfigStandard>({
-  puck_location: null,
+export const CurrentTableConfig = reactive<CrapsConfigStandard>({
+  puck_location: 4,
   table: {
     isCrapless: CrapsTypes.Standard,
     maxOdds: maxOdds345,

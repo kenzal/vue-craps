@@ -183,7 +183,7 @@ export const fnMaxOddsLightSide = function (
 ): number {
   if (this.placement !== undefined && this.wager !== undefined) {
     const placement = this.placement as PlacementBoxNumbers;
-    const config = CurrentTableConfig.value as CrapsConfig;
+    const config = CurrentTableConfig as CrapsConfig;
     const maxOddsSet = config.table.maxOdds as MaxOdds;
     const maxOdds = maxOddsSet[placement] as number;
     const wager = this.wager as number;

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import BetBoxNew from "@/components/BetBoxNew.vue";
 
-import {PropType, ref} from "vue";
+import { PropType, ref } from "vue";
 import type {
   BetSignature,
   BetSignatureBuy,
@@ -10,9 +10,15 @@ import type {
   BetSignatureLay,
   BetSignaturePlace,
 } from "@/compostables/Bets";
-import {BetMethods, findBet, fnMaxOddsDarkSide, fnMaxOddsLightSide,} from "@/compostables/Bets";
-import {BetType} from "@/enums/BetType";
-import type {PlacementBoxNumbers} from "@/compostables/Config";
+import {
+  BetMethods,
+  findBet,
+  fnMaxOddsDarkSide,
+  fnMaxOddsLightSide,
+} from "@/compostables/Bets";
+import { BetType } from "@/enums/BetType";
+import type { PlacementBoxNumbers } from "@/compostables/Config";
+import { CurrentTableConfig } from "@/compostables/Config";
 
 const props = defineProps({
   boxNumber: {
@@ -88,30 +94,60 @@ const emptyBuy = {
   placement: props.boxNumber,
   override_puck: null,
 };
-const existingDontCome = findBet(props.initialBets, BetType.DONT_COME, props.boxNumber) ?? {};
-const existingLay = findBet(props.initialBets, BetType.LAY, props.boxNumber) ?? {};
-const existingCome = findBet(props.initialBets, BetType.COME, props.boxNumber) ?? {};
-const existingPlace = findBet(props.initialBets, BetType.PLACE, props.boxNumber) ?? {};
-const existingBuy = findBet(props.initialBets, BetType.BUY, props.boxNumber) ?? {};
+const existingDontCome =
+  findBet(props.initialBets, BetType.DONT_COME, props.boxNumber) ?? {};
+const existingLay =
+  findBet(props.initialBets, BetType.LAY, props.boxNumber) ?? {};
+const existingCome =
+  findBet(props.initialBets, BetType.COME, props.boxNumber) ?? {};
+const existingPlace =
+  findBet(props.initialBets, BetType.PLACE, props.boxNumber) ?? {};
+const existingBuy =
+  findBet(props.initialBets, BetType.BUY, props.boxNumber) ?? {};
 
-const dontComeBet = ref<BetSignatureDontCome>(Object.assign(emptyDontCome, existingDontCome) as BetSignatureDontCome);
-const layBet = ref<BetSignatureLay>(  Object.assign(emptyLay, existingLay) as BetSignatureLay);
-const comeBet = ref<BetSignatureCome>(  Object.assign(emptyCome, existingCome) as BetSignatureCome);
-const placeBet = ref<BetSignaturePlace>(Object.assign(emptyPlace, existingPlace) as BetSignaturePlace);
-const buyBet = ref<BetSignatureBuy>(Object.assign(emptyBuy, existingBuy) as BetSignatureBuy);
+const dontComeBet = ref<BetSignatureDontCome>(
+  Object.assign(emptyDontCome, existingDontCome) as BetSignatureDontCome
+);
+const layBet = ref<BetSignatureLay>(
+  Object.assign(emptyLay, existingLay) as BetSignatureLay
+);
+const comeBet = ref<BetSignatureCome>(
+  Object.assign(emptyCome, existingCome) as BetSignatureCome
+);
+const placeBet = ref<BetSignaturePlace>(
+  Object.assign(emptyPlace, existingPlace) as BetSignaturePlace
+);
+const buyBet = ref<BetSignatureBuy>(
+  Object.assign(emptyBuy, existingBuy) as BetSignatureBuy
+);
 
 defineExpose({ getBets });
 </script>
 <template>
   <div class="CrapsBox">
-    <bet-box-new v-model="dontComeBet" :increment="increment" class="full-box" />
+    <bet-box-new
+      v-model="dontComeBet"
+      :increment="increment"
+      class="full-box"
+    />
     <bet-box-new v-model="layBet" :increment="increment" class="full-box" />
     <div class="name-box full-box">
       {{ boxNumber === 6 ? "Six" : boxNumber === 9 ? "Nine" : boxNumber }}
+      <img
+        v-if="CurrentTableConfig.puck_location === props.boxNumber"
+        alt="ON"
+        class="puck"
+        src="@/assets/puck-on.svg"
+      />
     </div>
-    <bet-box-new v-model="comeBet" :increment="increment" class="full-box"/>
-    <bet-box-new v-model="placeBet" :increment="increment" class="half-box"/>
-    <bet-box-new v-if="buyAllowed" v-model="buyBet" :increment="increment" class="half-box"/>
+    <bet-box-new v-model="comeBet" :increment="increment" class="full-box" />
+    <bet-box-new v-model="placeBet" :increment="increment" class="half-box" />
+    <bet-box-new
+      v-if="buyAllowed"
+      v-model="buyBet"
+      :increment="increment"
+      class="half-box"
+    />
   </div>
 </template>
 
@@ -147,5 +183,10 @@ defineExpose({ getBets });
 
 .name-box {
   font-size: xx-large;
+  justify-content: center;
+}
+
+.puck {
+  width: 50px;
 }
 </style>

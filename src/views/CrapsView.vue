@@ -7,6 +7,7 @@ import { useChipDenominations } from "@/compostables/Chips";
 import { ref } from "vue";
 import {flatOdds, maxOdds345} from "@/compostables/MaxOdds";
 import {CrapsTypes} from "@/enums/CrapsTypes";
+import {CurrentTableConfig} from "@/compostables/Config";
 
 const boxes = ref([]);
 
@@ -58,6 +59,7 @@ const collectCurrentBets = function () {
     />
     <div class="dont-come">
       <span>Don't</span><span>Come</span><span>Bar</span><span>12</span>
+      <img v-if="CurrentTableConfig.puck_location===null" src="@/assets/puck-off.svg" alt="OFF" class="puck"/>
     </div>
     <div class="props-box"></div>
     <div class="props-box"></div>
@@ -220,5 +222,11 @@ const collectCurrentBets = function () {
   line-height: 60px;
   vertical-align: center;
   float: left;
+}
+.dont-come .puck {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }
 </style>
