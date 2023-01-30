@@ -44,11 +44,19 @@
         y="50%"
         text-anchor="middle"
         :fill="colors.foreground"
-        style="font: bold 5em sans-serif"
+        style="font: bold 5em sans-serif;"
         dy=".35em"
       >
         {{ chipValue }}
       </text>
+      <circle v-if="selected"
+          cx="148.2385"
+          cy="148.2385"
+          r="148.2385"
+          stroke="gold"
+          stroke-width="10px"
+          fill-opacity="0"
+      />
     </g>
   </svg>
 </template>
@@ -62,6 +70,10 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  selected: {
+    type: Boolean,
+    default: false,
+  }
 });
 const colors = computed({
   get() {

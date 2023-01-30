@@ -121,6 +121,7 @@ const collectCurrentBets = function () {
         @click="setBetSize(betSize)"
         :chip-value="betSize"
         height="50px"
+        :selected="betSize == increment"
     >
       {{ betSize }}
     </gaming-chip>
