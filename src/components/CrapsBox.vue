@@ -133,13 +133,14 @@ defineExpose({ getBets });
     />
     <bet-box-new v-model="layBet" :increment="increment" class="full-box" />
     <div class="name-box full-box">
-      {{ boxNumber === 6 ? "Six" : boxNumber === 9 ? "Nine" : boxNumber }}
-      <img
+      <p :class="[6,9].includes(boxNumber) ? 'name' : 'number'">{{ boxNumber === 6 ? "Six" : boxNumber === 9 ? "Nine" : boxNumber }}</p>
+      <div class="puckBox">
+        <img
         v-if="CurrentTableConfig.puck_location === props.boxNumber"
         alt="ON"
         class="puck"
         src="@/assets/puck-on.svg"
-      />
+      /></div>
     </div>
     <bet-box-new v-model="comeBet" :increment="increment" class="full-box" />
     <bet-box-new v-model="placeBet" :increment="increment" class="half-box" />
@@ -153,6 +154,8 @@ defineExpose({ getBets });
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css?family=Rye&display=swap');
+
 .CrapsBox {
   width: 100%;
   border: 1px solid white;
@@ -163,7 +166,7 @@ defineExpose({ getBets });
   grid-column-end: span 2;
 }
 
-.CrapsBox div {
+.CrapsBox>div {
   height: 7ex;
   width: 100%;
   display: inline-grid;
@@ -183,11 +186,27 @@ defineExpose({ getBets });
 }
 
 .name-box {
+  font-family: 'Rye', Serif;
+  display: flex;
   font-size: xx-large;
   justify-content: center;
+  align-items: center;
+
+}
+.name-box .name {
+  transform: rotate(-35deg);
 }
 
+.puckBox {
+  position: absolute;
+  bottom: 0;
+  display: block;
+  height: 50px;
+  width: 100%;
+  left: 0;
+}
 .puck {
-  width: 50px;
+  max-width: 50px;
+  max-height: 50px;
 }
 </style>
