@@ -3,30 +3,29 @@
     class="bet-box"
     :class="bet.getOptions().hasOdds ? 'withOdds' : 'withoutOdds'"
   >
-    <span
+    <gaming-chip
+      v-if="'wager' in bet"
       @click.prevent="increaseWager"
       @contextmenu.prevent="decreaseWager"
       class="wager"
-      :class="'chip-' + useBestChip(bet.wager)"
-      >{{ bet?.wager ? bet?.wager : "" }}</span
-    >
-    <span
+      :chip-value="bet.wager"
+    />
+    <gaming-chip
       v-if="'odds' in bet"
       @click.prevent="increaseOdds"
       @contextmenu.prevent="decreaseOdds"
       class="wager odds"
-      :class="'chip-' + useBestChip(bet.odds)"
-      >{{ bet?.odds ? bet?.odds : "" }}</span
-    >
+      :chip-value="bet.odds"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { useBestChip } from "@/compostables/Chips";
 import type { PropType } from "vue";
 import type { BetSignature } from "@/compostables/Bets";
 import { computed } from "vue";
-import {CurrentTableConfig} from "@/compostables/Config";
+import { CurrentTableConfig } from "@/compostables/Config";
+import GamingChip from "@/components/GamingChip.vue";
 
 const emit = defineEmits(["update:modelValue"]);
 
@@ -51,21 +50,27 @@ const bet = computed({
 });
 
 const increaseWager = (): void => {
-  if(!bet.value.canIncrease()) return;
+  if (!bet.value.canIncrease()) return;
   const minWager = CurrentTableConfig.table.bet_min;
   bet.value.wager = Math.max(minWager, bet.value.wager + props.increment);
 };
 const increaseOdds = (): void => {
-  if ("odds" in bet.value) bet.value.odds = Math.min(bet.value.maxOdds(), bet.value.odds + props.increment);
+  if ("odds" in bet.value)
+    bet.value.odds = Math.min(
+      bet.value.maxOdds(),
+      bet.value.odds + props.increment
+    );
 };
 const decreaseWager = (): void => {
   bet.value.wager = Math.max(0, bet.value.wager - props.increment);
   const minWager = CurrentTableConfig.table.bet_min;
   if (minWager && bet.value.wager < minWager) bet.value.wager = 0;
-  if ("odds" in bet.value) bet.value.odds = Math.min(bet.value.maxOdds(), bet.value.odds);
+  if ("odds" in bet.value)
+    bet.value.odds = Math.min(bet.value.maxOdds(), bet.value.odds);
 };
 const decreaseOdds = (): void => {
-  if ("odds" in bet.value) bet.value.odds = Math.max(0, bet.value.odds - props.increment);
+  if ("odds" in bet.value)
+    bet.value.odds = Math.max(0, bet.value.odds - props.increment);
 };
 </script>
 

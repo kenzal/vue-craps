@@ -5,18 +5,18 @@
     @contextmenu.prevent="decrease"
   >
     <span v-if="$slots.default" class="name"><slot></slot></span>
-    <span
+    <gaming-chip
       v-if="modelValue"
       class="wager"
-      :class="'chip-' + useBestChip(modelValue)"
-      >{{ modelValue }}</span
-    >
+      :chip-value="modelValue"
+      />
   </div>
 </template>
 
 <script setup>
 import { watch } from "vue";
 import { useBestChip } from "@/compostables/Chips";
+import GamingChip from "@/components/GamingChip.vue";
 
 const emit = defineEmits(["update:modelValue"]);
 

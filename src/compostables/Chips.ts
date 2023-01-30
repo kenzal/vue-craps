@@ -4,9 +4,3 @@ export function useChipDenominations() {
   return ref([1, 5, 25, 100, 500]);
 }
 
-export function useBestChip(value: Number) {
-  return Math.max.apply(
-    null,
-    useChipDenominations().value.filter((denomination) => denomination <= value)
-  );
-}
