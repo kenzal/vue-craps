@@ -111,10 +111,10 @@ const collectCurrentBets = function () {
   </div>
   <ul class="bet-select">
     <li
-      v-for="betSize in betSizes"
-      v-bind:key="betSize"
-      @click="setBetSize(betSize)"
-      :class="'wager chip-' + betSize"
+        v-for="betSize in betSizes"
+        v-bind:key="betSize"
+        @click="setBetSize(betSize)"
+        :class="'wager chip-' + betSize"
     >
       {{ betSize }}
     </li>
