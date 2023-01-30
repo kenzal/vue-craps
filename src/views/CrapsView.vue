@@ -9,6 +9,8 @@ import {flatOdds, maxOdds345} from "@/compostables/MaxOdds";
 import {CrapsTypes} from "@/enums/CrapsTypes";
 import {CurrentTableConfig} from "@/compostables/Config";
 import GamingChip from "@/components/GamingChip.vue";
+import CrapsDie from "@/components/CrapsDie.vue";
+import CrapsDice from "@/components/CrapsDice.vue";
 
 const boxes = ref([]);
 
@@ -59,13 +61,13 @@ const collectCurrentBets = function () {
       ref="boxes"
     />
     <div class="dont-come">
-      <span>Don't</span><span>Come</span><span>Bar</span><span>12</span>
+      <span>Don't</span><span>Come</span><span>Bar</span><craps-dice :dice-set="[6,6]" size="30px" display="inline-block"/>
       <div class="puckBox">
       <img v-if="CurrentTableConfig.puck_location===null" src="@/assets/puck-off.svg" alt="OFF" class="puck"/>
       </div>
     </div>
     <div class="props-box"></div>
-    <div class="props-box"><gaming-chip chip-value="62" height="50px"/></div>
+    <div class="props-box"><craps-dice :dice-set="[6,6]" size="50px" /></div>
     <div class="self-serve">
       <bet-box
         :increment="increment"
@@ -89,7 +91,7 @@ const collectCurrentBets = function () {
         :min="minBet"
         name="dontLine"
         style=""
-        >Don't Pass Bar 12</bet-box
+        >Don't Pass Bar <craps-dice :dice-set="[6,6]" size="20px" display="inline-block"/></bet-box
       >
       <bet-box
         :increment="increment"
