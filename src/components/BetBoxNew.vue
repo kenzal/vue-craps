@@ -8,14 +8,14 @@
       @click.prevent="increaseWager"
       @contextmenu.prevent="decreaseWager"
       class="wager"
-      :chip-value="bet.wager"
+      :value="bet.wager"
     />
     <gaming-chip
       v-if="'odds' in bet"
       @click.prevent="increaseOdds"
       @contextmenu.prevent="decreaseOdds"
       class="wager odds"
-      :chip-value="bet.odds"
+      :value="bet.odds"
     />
   </div>
 </template>

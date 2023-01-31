@@ -6,8 +6,8 @@
     xml:space="preserve"
     height="50"
   >
-    <title lang="en">Chip Value {{ chipValue }}</title>
-    <g v-if="chipValue">
+    <title lang="en">Chip Value {{ value }}</title>
+    <g v-if="value">
       <circle
         cx="148.2385"
         cy="148.2385"
@@ -47,7 +47,7 @@
         style="font: bold 5em sans-serif;"
         dy=".35em"
       >
-        {{ chipValue }}
+        {{ value }}
       </text>
       <circle v-if="selected"
           cx="148.2385"
@@ -66,7 +66,7 @@ import { computed } from "vue";
 import { useChipDenominations } from "@/compostables/Chips";
 
 const props = defineProps({
-  chipValue: {
+  value: {
     type: Number,
     required: true,
   },
@@ -81,7 +81,7 @@ const colors = computed({
       Math.max.apply(
         null,
         useChipDenominations().value.filter(
-          (denomination) => denomination <= props.chipValue
+          (denomination) => denomination <= props.value
         )
       )
     ) {

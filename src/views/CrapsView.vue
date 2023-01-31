@@ -11,6 +11,7 @@ import {CurrentTableConfig} from "@/compostables/Config";
 import GamingChip from "@/components/GamingChip.vue";
 import CrapsDie from "@/components/CrapsDie.vue";
 import CrapsDice from "@/components/CrapsDice.vue";
+import HardwaysArea from "@/components/HardwaysArea.vue";
 
 const boxes = ref([]);
 
@@ -66,7 +67,7 @@ const collectCurrentBets = function () {
       <img v-if="CurrentTableConfig.puck_location===null" src="@/assets/puck-off.svg" alt="OFF" class="puck"/>
       </div>
     </div>
-    <div class="props-box"></div>
+    <hardways-area class="props-box"></hardways-area>
     <div class="props-box"><craps-dice :dice-set="[6,6]" size="50px" /></div>
     <div class="self-serve">
       <bet-box
@@ -119,7 +120,7 @@ const collectCurrentBets = function () {
         v-for="betSize in betSizes"
         v-bind:key="betSize"
         @click="setBetSize(betSize)"
-        :chip-value="betSize"
+        :value="betSize"
         height="50px"
         :selected="betSize == increment"
     >

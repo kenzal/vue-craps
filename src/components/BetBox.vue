@@ -8,7 +8,7 @@
     <gaming-chip
       v-if="modelValue"
       class="wager"
-      :chip-value="modelValue"
+      :value="modelValue"
       />
   </div>
 </template>
