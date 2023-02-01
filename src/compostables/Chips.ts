@@ -1,6 +1,5 @@
-import { ref } from "vue";
+import { ref } from 'vue';
 
 export function useChipDenominations() {
-  return ref([1, 5, 25, 100, 500]);
+    return ref([1, 5, 25, 100, 500]);
 }
-

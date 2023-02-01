@@ -1,21 +1,16 @@
 <template>
-  <svg
-    :fill="colors.background"
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 296.477 296.477"
-    xml:space="preserve"
-    height="50"
-  >
-    <title lang="en">Chip Value {{ value }}</title>
-    <g v-if="value">
-      <circle
-        cx="148.2385"
-        cy="148.2385"
-        r="148.2385"
-        :fill="colors.foreground"
-      />
-      <path
-        d="M244.63,35.621c-21.771-18.635-47.382-29.855-73.767-33.902C121.871-5.797,70.223,11.421,35.622,
+    <svg
+        :fill="colors.background"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 296.477 296.477"
+        xml:space="preserve"
+        height="50"
+    >
+        <title lang="en">Chip Value {{ value }}</title>
+        <g v-if="value">
+            <circle cx="148.2385" cy="148.2385" r="148.2385" :fill="colors.foreground" />
+            <path
+                d="M244.63,35.621c-21.771-18.635-47.382-29.855-73.767-33.902C121.871-5.797,70.223,11.421,35.622,
               51.847c-53.236,62.198-45.972,155.773,16.226,209.01c21.771,18.634,47.381,29.853,73.766,33.901
            c48.991,7.517,100.641-9.703,135.241-50.13C314.091,182.431,306.826,88.856,244.63,35.621z
            M273.361,191.241l-45.305-15.618
@@ -38,84 +33,83 @@
            M193.203,272.635c-6.409,2.309-12.986,4.11-19.658,5.403l-9.117-47
            c17.789-3.467,34.585-12.651,47.394-27.342l36.121,31.409C233.154,252.087,214.257,265.047,193.203,
            272.635z"
-      />
-      <text
-        x="50%"
-        y="50%"
-        text-anchor="middle"
-        :fill="colors.foreground"
-        style="font: bold 5em sans-serif;"
-        dy=".35em"
-      >
-        {{ value }}
-      </text>
-      <circle v-if="selected"
-          cx="148.2385"
-          cy="148.2385"
-          r="148.2385"
-          stroke="gold"
-          stroke-width="10px"
-          fill-opacity="0"
-      />
-    </g>
-  </svg>
+            />
+            <text
+                x="50%"
+                y="50%"
+                text-anchor="middle"
+                :fill="colors.foreground"
+                style="font: bold 5em sans-serif"
+                dy=".35em"
+            >
+                {{ value }}
+            </text>
+            <circle
+                v-if="selected"
+                cx="148.2385"
+                cy="148.2385"
+                r="148.2385"
+                stroke="gold"
+                stroke-width="10px"
+                fill-opacity="0"
+            />
+        </g>
+    </svg>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import { useChipDenominations } from "@/compostables/Chips";
+import { computed } from 'vue';
+import { useChipDenominations } from '@/compostables/Chips';
 
 const props = defineProps({
-  value: {
-    type: Number,
-    required: true,
-  },
-  selected: {
-    type: Boolean,
-    default: false,
-  }
+    value: {
+        type: Number,
+        required: true,
+    },
+    selected: {
+        type: Boolean,
+        default: false,
+    },
 });
 const colors = computed({
-  get() {
-    switch (
-      Math.max.apply(
-        null,
-        useChipDenominations().value.filter(
-          (denomination) => denomination <= props.value
-        )
-      )
-    ) {
-      case 1:
-      default:
-        return {
-          background: "azure",
-          foreground: "blue",
-        };
-      case 5:
-        return {
-          background: "firebrick",
-          foreground: "white",
-        };
-      case 25:
-        return {
-          background: "forestgreen",
-          foreground: "white",
-        };
-      case 100:
-        return {
-          background: "black",
-          foreground: "white",
-        };
-      case 500:
-        return {
-          background: "indigo",
-          foreground: "white",
-        };
-    }
-  },
-  set(val) {
-    return;
-  },
+    get() {
+        switch (
+            Math.max.apply(
+                null,
+                useChipDenominations().value.filter((denomination) => denomination <= props.value),
+            )
+        ) {
+            case 1:
+            default:
+                return {
+                    background: 'azure',
+                    foreground: 'blue',
+                };
+            case 5:
+                return {
+                    background: 'firebrick',
+                    foreground: 'white',
+                };
+            case 25:
+                return {
+                    background: 'forestgreen',
+                    foreground: 'white',
+                };
+            case 100:
+                return {
+                    background: 'black',
+                    foreground: 'white',
+                };
+            case 500:
+                return {
+                    background: 'indigo',
+                    foreground: 'white',
+                };
+        }
+    },
+    set(val) {
+        return;
+    },
 });
 </script>
 

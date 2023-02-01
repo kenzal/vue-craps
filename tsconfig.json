@@ -10,5 +10,9 @@
     {
       "path": "./tsconfig.vitest.json"
     }
-  ]
+  ],
+  "compilerOptions": {
+    "lib": ["es2017"],
+    "target": "ESNext"
+  }
 }
